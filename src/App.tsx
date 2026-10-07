@@ -7,6 +7,7 @@ import type {
   Application,
   ApplicationStatus,
   JobType,
+  NewApplication,
 } from "./types/application";
 
 function App() {
@@ -54,7 +55,7 @@ function App() {
   // -----------------------
 
   const addApplication = async (
-  application: Application
+  application: NewApplication
 ) => {
   try {
     const response = await fetch(
@@ -123,20 +124,48 @@ function App() {
   }
 };
 
-  const updateApplicationStatus = (
+  const updateApplicationStatus = async (
   id: number,
   newStatus: ApplicationStatus
 ) => {
-  setApplications(
-    applications.map((application) =>
-      application.id === id
-        ? {
-            ...application,
-            status: newStatus,
-          }
-        : application
-    )
-  );
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/applications/${id}`,
+      {
+        method: "PATCH",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          status: newStatus,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to update application"
+      );
+    }
+
+    const updatedApplication: Application =
+      await response.json();
+
+    setApplications((currentApplications) =>
+      currentApplications.map((application) =>
+        application.id === id
+          ? updatedApplication
+          : application
+      )
+    );
+  } catch (error) {
+    console.error(
+      "Error updating application:",
+      error
+    );
+  }
 };
 
   // -----------------------

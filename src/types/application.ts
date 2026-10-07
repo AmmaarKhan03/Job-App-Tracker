@@ -20,3 +20,11 @@ export interface Application {
   status: ApplicationStatus;
   dateApplied: string;
 }
+
+export interface NewApplication {
+  company: string;
+  position: string;
+  type: JobType;
+  status: ApplicationStatus;
+  dateApplied: string;
+}

@@ -1,12 +1,14 @@
 import { useState } from "react";
 import type {
-  Application,
+  NewApplication,
   ApplicationStatus,
   JobType,
 } from "../types/application";
 
 interface ApplicationFormProps {
-  onAddApplication: (application: Application) => void;
+  onAddApplication: (
+    application: NewApplication
+  ) => void;
 }
 
 function ApplicationForm({
@@ -27,14 +29,13 @@ function ApplicationForm({
       return;
     }
 
-    const newApplication: Application = {
-      id: Date.now(),
-      company,
-      position,
-      type,
-      status,
-      dateApplied,
-    };
+    const newApplication: NewApplication = {
+  company,
+  position,
+  type,
+  status,
+  dateApplied,
+};
 
     onAddApplication(newApplication);
 
