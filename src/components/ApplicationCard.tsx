@@ -1,13 +1,23 @@
-import type { Application } from "../types/application";
+import type {
+  Application,
+  ApplicationStatus,
+} from "../types/application";
 
 interface ApplicationCardProps {
   application: Application;
+
   onDelete: (id: number) => void;
+
+  onStatusChange: (
+    id: number,
+    status: ApplicationStatus
+  ) => void;
 }
 
 function ApplicationCard({
   application,
   onDelete,
+  onStatusChange,
 }: ApplicationCardProps) {
   return (
     <div>
@@ -21,17 +31,55 @@ function ApplicationCard({
         Type: {application.type}
       </p>
 
-      <p>
-        Status: {application.status}
-      </p>
+      <div>
+        <label>Status: </label>
+
+        <select
+          value={application.status}
+          onChange={(event) =>
+            onStatusChange(
+              application.id,
+              event.target
+                .value as ApplicationStatus
+            )
+          }
+        >
+          <option value="Wishlist">
+            Wishlist
+          </option>
+
+          <option value="Applied">
+            Applied
+          </option>
+
+          <option value="OA">
+            OA
+          </option>
+
+          <option value="Interview">
+            Interview
+          </option>
+
+          <option value="Offer">
+            Offer
+          </option>
+
+          <option value="Rejected">
+            Rejected
+          </option>
+        </select>
+      </div>
 
       <p>
         Date Applied:{" "}
-        {application.dateApplied || "Not specified"}
+        {application.dateApplied ||
+          "Not specified"}
       </p>
 
       <button
-        onClick={() => onDelete(application.id)}
+        onClick={() =>
+          onDelete(application.id)
+        }
       >
         Delete
       </button>
