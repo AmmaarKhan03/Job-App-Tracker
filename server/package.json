@@ -20,8 +20,8 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.4",
+    "prisma": "^8.0.0-rc.20",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
-    "prisma": "8.0.0-rc.20"
+    "typescript": "^7.0.2"
   }
 }
