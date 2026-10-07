@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ApplicationForm from "./components/ApplicationForm";
 import ApplicationCard from "./components/ApplicationCard";
@@ -11,16 +11,34 @@ import type {
 
 function App() {
   const [applications, setApplications] =
-    useState<Application[]>([
-      {
-        id: 1,
-        company: "Google",
-        position: "Software Engineer Intern",
-        type: "Internship",
-        status: "Applied",
-        dateApplied: "2026-10-01",
-      },
-    ]);
+  useState<Application[]>([]);
+
+  useEffect(() => {
+  const fetchApplications = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/applications"
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch applications");
+      }
+
+      const data: Application[] =
+        await response.json();
+
+      setApplications(data);
+    } catch (error) {
+      console.error(
+        "Error fetching applications:",
+        error
+      );
+    }
+  };
+
+  fetchApplications();
+}, []);
+
 
   // Search/filter state
   const [search, setSearch] = useState("");
