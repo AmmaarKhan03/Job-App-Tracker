@@ -53,26 +53,75 @@ function App() {
   // ADD
   // -----------------------
 
-  const addApplication = (
-    application: Application
-  ) => {
-    setApplications([
-      ...applications,
-      application,
+  const addApplication = async (
+  application: Application
+) => {
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/applications",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(application),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to add application"
+      );
+    }
+
+    const newApplication: Application =
+      await response.json();
+
+    setApplications((currentApplications) => [
+      ...currentApplications,
+      newApplication,
     ]);
-  };
+  } catch (error) {
+    console.error(
+      "Error adding application:",
+      error
+    );
+  }
+};
 
   // -----------------------
   // DELETE
   // -----------------------
 
-  const deleteApplication = (id: number) => {
-    setApplications(
-      applications.filter(
+  const deleteApplication = async (id: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/applications/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to delete application"
+      );
+    }
+
+    setApplications((currentApplications) =>
+      currentApplications.filter(
         (application) => application.id !== id
       )
     );
-  };
+  } catch (error) {
+    console.error(
+      "Error deleting application:",
+      error
+    );
+  }
+};
 
   const updateApplicationStatus = (
   id: number,
